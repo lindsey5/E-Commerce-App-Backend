@@ -20,7 +20,7 @@ export const createPaymentCheckout = async (req, res) => {
                   show_description: false,
                   show_line_items: true,
                   line_items: data,
-                  payment_method_types: ['gcash', 'paymaya']
+                  payment_method_types: ['gcash', 'paymaya'],
                 }
               }
             })
@@ -32,6 +32,7 @@ export const createPaymentCheckout = async (req, res) => {
         if(response.ok){
             res.status(200).json({ checkout_url: result.data.attributes.checkout_url});
         }else{
+            console.log(result)
            res.status(400).json(result)
         }
     }catch(err){
