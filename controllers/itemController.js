@@ -21,6 +21,19 @@ export const create_item = async (req, res) => {
     }
 }
 
+export const get_item = async (req, res) => {
+    try{
+        const item = await Item.findById(req.params.id);
+        if(!item) return res.status(400).json({ success: false, message: "Product Item not found"});
+
+        res.status(200).json({success: true, item});
+        
+    }catch(err){
+        const errors = errorHandler(err);
+        res.status(500).json({errors});
+    }
+}
+
 export const update_item = async (req, res) => {
     try{
         const { id } = req.params;
