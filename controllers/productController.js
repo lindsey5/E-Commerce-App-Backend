@@ -29,7 +29,7 @@ export const get_product = async (req, res) => {
         return res.status(200).json({ success: true, product: { ...product.toObject(), items}});
     }catch(err){
         const errors = errorHandler(err);
-        res.status(500).json({errors});
+        res.status(500).json({success: false, errors});
     }
 }
 
@@ -66,7 +66,7 @@ export const get_products = async (req, res) => {
         });
     }catch(err){
         const errors = errorHandler(err);
-        res.status(500).json({errors});
+        res.status(500).json({success: false, errors});
     }
 }
 
@@ -89,6 +89,6 @@ export const update_product = async (req, res) => {
     }catch(err){
         console.log(err)
         const errors = errorHandler(err);
-        res.status(500).json({errors});
+        res.status(500).json({success: false, errors});
     }
 }

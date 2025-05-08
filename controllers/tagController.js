@@ -15,7 +15,7 @@ export const create_tag = async (req,res) => {
     }catch(err){
         console.log(err)
         const errors = errorHandler(err);
-        res.status(500).json({errors});
+        res.status(500).json({success: false, errors});
     }
 }
 
@@ -31,6 +31,6 @@ export const get_tags = async (req, res) => {
         res.status(200).json({success: true, tags: completedTags});
     }catch(err){
         const errors = errorHandler(err);
-        res.status(500).json({errors});
+        res.status(500).json({success: false, errors});
     }
 }

@@ -17,7 +17,7 @@ export const create_item = async (req, res) => {
         
     }catch(err){
         const errors = errorHandler(err);
-        res.status(500).json({errors});
+        res.status(500).json({success: false, errors});
     }
 }
 
@@ -30,7 +30,7 @@ export const get_item = async (req, res) => {
         
     }catch(err){
         const errors = errorHandler(err);
-        res.status(500).json({errors});
+        res.status(500).json({success: false, errors});
     }
 }
 
@@ -55,7 +55,7 @@ export const update_item = async (req, res) => {
     }catch(err){
         console.log(err)
         const errors = errorHandler(err);
-        res.status(500).json({errors});
+        res.status(500).json({success: false, errors});
     }
 }
 
@@ -66,6 +66,6 @@ export const get_items = async (req, res) => {
         res.status(200).json({ success: true, items });
     }catch(err){
         const errors = errorHandler(err);
-        res.status(500).json({errors});
+        res.status(500).json({success: false, errors});
     }
 }
