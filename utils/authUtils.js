@@ -9,6 +9,10 @@ export const createToken = (id) => {
     return token
 }
 
+export const verifyPassword = async (password, userPassword) => {
+    return await bcrypt.compare(password, userPassword)
+}
+
 export const hashPassword = async (password) => {
     const salt = await bcrypt.genSalt();
     return await bcrypt.hash(password, salt);

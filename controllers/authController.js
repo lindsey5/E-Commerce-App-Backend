@@ -1,7 +1,31 @@
 import User from "../models/user.js";
 import { sendVerificationCode } from "../services/emailService.js";
-import { hashPassword, createToken } from '../utils/authUtils.js';
+import { hashPassword, createToken, verifyPassword } from '../utils/authUtils.js';
 import errorHandler from "../utils/errorHandler.js";
+
+export const login = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+      const user = await User.findOne({ email });
+    
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'Email not found'})
+      }
+
+      const isMatch = await verifyPassword(password, user.password);
+  
+      if (!isMatch) {
+        return res.status(401).json({ success: false, message: 'Incorrect Password'})
+      }
+      const token = createToken(user._id);
+
+      res.status(201).json({ success: true, token, user})
+    } catch (err) {
+      const errors = errorHandler(err);
+      res.status(500).json({success: false, errors});
+    }
+}
 
 export const signup = async (req, res) => {
     try{
