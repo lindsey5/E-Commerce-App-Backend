@@ -1,7 +1,5 @@
 import { Server } from 'socket.io';
-import Notification from '../model/Notification.js';
 import jwt from 'jsonwebtoken'
-import cookie from 'cookie';
 
 let socketInstance;
 
@@ -25,12 +23,15 @@ const initializeSocket = (server) => {
     const userSocketMap = new Map();
 
     io.on('connection', (socket) => {
-        const cookies = cookie.parse(socket.handshake.headers.cookie || '');
-        
-        const token = cookies.jwt;
+       const token = socket.handshake.auth.token;
 
+       socket.on('disconnect', () => {
+            socketInstance = undefined
+            console.log('User disconnected:', socket.id);
+        });
+    
         if (!token) {
-            console.log('No JWT token found in cookies');
+            console.log('No JWT token found');
             socket.disconnect(); 
             return;
         }
@@ -48,11 +49,6 @@ const initializeSocket = (server) => {
         }
 
         socketInstance = socket;
-
-        socket.on('disconnect', () => {
-            socketInstance = undefined
-            console.log('User disconnected:', socket.id);
-        });
     });
 }
 

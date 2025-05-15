@@ -2,10 +2,11 @@ import errorHandler from "../utils/errorHandler.js";
 
 export const createPaymentCheckout = async (req, res) => {
     try{
-        const data = req.body;
+        const { items, address, user } = req.body;
 
-        if(!data || data.length < 1) throw new Error("Data is required");
-        const items = data.map(item => ({ 
+        if(!items || items.length < 1) throw new Error("Items is required");
+        const line_items = items.map(item => ({ 
+          images: [item.image],
           currency: "PHP", 
           amount: item.price * 100, 
           name: `${item.name} ${item.color} | ${item.size}`,  
@@ -22,14 +23,17 @@ export const createPaymentCheckout = async (req, res) => {
             body: JSON.stringify({
               data: {
                 attributes: {
-                  send_email_receipt: false,
+                  cancel_url: 'http://localhost:8081',
+                  send_email_receipt: true,
                   show_description: false,
                   show_line_items: true,
-                  line_items: items,
+                  line_items,
                   payment_method_types: ['gcash', 'paymaya'],
-                },
-                metadata: { 
-                  items: data
+                  metadata: { 
+                    items: JSON.stringify(items),
+                    address: JSON.stringify(address),
+                    user: JSON.stringify(user)
+                  }
                 }
               }
             })

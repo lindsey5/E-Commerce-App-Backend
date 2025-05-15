@@ -43,7 +43,6 @@ export const update_item = async (req, res) => {
             size: req.body.size, 
             color: req.body.color
         });
-        console.log(item)
         if(item) return res.status(400).json({ success: false, message: "Product item already exists."});
 
         const updatedItem = await Item.findOneAndUpdate(
